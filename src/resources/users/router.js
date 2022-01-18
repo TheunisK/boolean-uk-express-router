@@ -14,11 +14,15 @@ const users = [
   {
     id: 3,
     email: "mike@mail.com"
+  },
+  {
+    id: 4,
+    email: "theunis.knoetze@gmail.com"
   }
 ];
 
 router.get("/", (req, res) => {
-  //console.log("here");
+  console.log("here");
   res.json({ users });
 });
 

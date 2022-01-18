@@ -1,4 +1,6 @@
-// Import here...
+const express = require("express");
+
+const router = express.Router();
 
 const films = [
   {
@@ -23,4 +25,50 @@ const films = [
   }
 ];
 
-// Write routes here...
+router.get("/", (req, res) => {
+  const response = { films }
+  res.json(response);
+});
+
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const parsedId = parseInt(id)
+  const film = films.find((film) => film.id === parsedId);
+
+  res.json({ film });
+
+})
+
+router.get("/director/:name",(req, res) => {
+  const { name } = req.params;
+  const parsedName = name.replace("-", " ");
+  const newFilms = films.filter((film) => film.director.toLowerCase() === parsedName.toLowerCase());
+
+  res.json({ newFilms })
+})
+
+router.post("/", (req, res) =>{
+  const filmToCreate = {
+    ...req.body
+  }
+
+  filmToCreate.id = films.length + 1;
+
+  films.push(filmToCreate);
+
+  console.log("post film", films);
+
+  res.json(filmToCreate);
+
+})
+
+module.exports = router;
+
+
+
+/* curl -X POST -H "Content-Type: application/json" 
+-d '{"title": "linuxize", "director": "linuxize@example.com"}' 
+http://localhost:3030/films/
+
+*/
